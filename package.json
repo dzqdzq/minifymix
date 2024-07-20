@@ -1,11 +1,10 @@
 {
   "name": "minifymix",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "minifymix": "bin/cmd.js",
-    "minifyMix": "bin/cmd.js"
+    "minifymix": "bin/cmd.js"
   },
   "keywords": [
     "js",

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import minifymix from '../index.js';
 
 function useage() {
