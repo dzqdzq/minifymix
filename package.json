@@ -1,0 +1,32 @@
+{
+  "name": "minifymix",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "minifymix": "bin/cmd.js",
+    "minifyMix": "bin/cmd.js"
+  },
+  "keywords": [
+    "js",
+    "minify",
+    "minifymix",
+    "terser",
+    "obfuscator",
+    "JavaScriptObfuscator",
+    "javaScriptobfuscator",
+    "javascript-obfuscator",
+    "dzqdzq"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dzqdzq/minifymix.git"
+  },
+  "dependencies": {
+    "javascript-obfuscator": "^4.1.1",
+    "terser": "^5.31.3"
+  },
+  "author": "dzqdzq",
+  "license": "ISC",
+  "description": "JavaScript minification and obfuscation tool"
+}
