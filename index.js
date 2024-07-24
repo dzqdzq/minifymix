@@ -2,11 +2,11 @@ import fs from "fs";
 import * as terser from "terser";
 import JavaScriptObfuscator from "javascript-obfuscator";
 
-async function minifymix(inputFilePath) {
+async function minifymix(inputFilePath, isMix=true) {
   if (!fs.existsSync(inputFilePath)) {
     console.log(`minifyMix ${inputFilePath}: No such file`);
   }
-  const outputFilePath = inputFilePath.replace(".js", ".mix.js");
+  const outputFilePath = inputFilePath.replace(".js", isMix ? ".mix.js": ".min.js");
 
   // 读取输入文件
   const code = fs.readFileSync(inputFilePath, "utf8");
@@ -72,37 +72,40 @@ async function minifymix(inputFilePath) {
     return;
   }
 
-  const obfuscationOptions = {
-    compact: true, // 压缩代码
-    controlFlowFlattening: true, // 启用控制流展平
-    controlFlowFlatteningThreshold: 0.5, // 控制流展平的概率（0到1之间）
-    deadCodeInjection: true, // 启用死代码注入
-    deadCodeInjectionThreshold: 0.5, // 死代码注入的概率（0到1之间）
-    debugProtection: true, // 启用调试保护
-    debugProtectionInterval: 1, // 启用调试保护间隔
-    disableConsoleOutput: true, // 禁用 console 输出
-    identifierNamesGenerator: "hexadecimal", // 标识符名称生成器（'hexadecimal', 'mangled', 'mangled-shuffled'）
-    log: true, // 禁用日志输出
-    renameGlobals: true, // 重命名全局变量
-    rotateStringArray: true, // 旋转字符串数组
-    selfDefending: true, // 启用自我防御
-    splitStrings: true, // 启用字符串拆分
-    splitStringsChunkLength: 10, // 字符串拆分的块长度
-    stringArray: true, // 启用字符串数组
-    stringArrayEncoding: ["rc4"], // 字符串数组编码（'base64', 'rc4'）
-    stringArrayThreshold: 1, // 字符串数组的概率（0到1之间）
-    transformObjectKeys: true, // 转换对象键
-    unicodeEscapeSequence: false, // 禁用 Unicode 转义序列
-  };
-  // 使用 javascript-obfuscator 混淆代码
-  const obfuscatedCode = JavaScriptObfuscator.obfuscate(
-    minifiedCode.code,
-    obfuscationOptions
-  );
+  let retCode = minifiedCode.code;
+  if(isMix){
+    const obfuscationOptions = {
+      compact: true, // 压缩代码
+      controlFlowFlattening: true, // 启用控制流展平
+      controlFlowFlatteningThreshold: 0.5, // 控制流展平的概率（0到1之间）
+      deadCodeInjection: true, // 启用死代码注入
+      deadCodeInjectionThreshold: 0.5, // 死代码注入的概率（0到1之间）
+      debugProtection: true, // 启用调试保护
+      debugProtectionInterval: 1, // 启用调试保护间隔
+      disableConsoleOutput: true, // 禁用 console 输出
+      identifierNamesGenerator: "hexadecimal", // 标识符名称生成器（'hexadecimal', 'mangled', 'mangled-shuffled'）
+      log: true, // 禁用日志输出
+      renameGlobals: true, // 重命名全局变量
+      rotateStringArray: true, // 旋转字符串数组
+      selfDefending: true, // 启用自我防御
+      splitStrings: true, // 启用字符串拆分
+      splitStringsChunkLength: 10, // 字符串拆分的块长度
+      stringArray: true, // 启用字符串数组
+      stringArrayEncoding: ["rc4"], // 字符串数组编码（'base64', 'rc4'）
+      stringArrayThreshold: 1, // 字符串数组的概率（0到1之间）
+      transformObjectKeys: true, // 转换对象键
+      unicodeEscapeSequence: false, // 禁用 Unicode 转义序列
+    };
+    // 使用 javascript-obfuscator 混淆代码
+    const obfuscatedCode = JavaScriptObfuscator.obfuscate(
+      retCode,
+      obfuscationOptions
+    );
 
-  // 保存混淆后的代码到输出文件
-  fs.writeFileSync(outputFilePath, obfuscatedCode.getObfuscatedCode(), "utf8");
+    retCode = obfuscatedCode.getObfuscatedCode();
+  }
 
+  fs.writeFileSync(outputFilePath, retCode, "utf8");
   console.log("minifyMix output file:", outputFilePath);
   console.log("minifyMix Done!");
 }
